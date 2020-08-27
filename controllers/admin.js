@@ -18,40 +18,43 @@ exports.getAddProd = (req, res) => {
 
 exports.postProd = async (req, res, next) => {
     const image = req.file;
-    const prodData = {
-        title: req.body.title,
-        price: req.body.price,
-        desc: req.body.desc,
-        imageurl: image.path.substr(7),
-        userId: req.user
-    }
-
-    if (!image) {
-        return res.render('admin/add-product', {
-            pageTitle: 'Add product',
-            path: '/admin/add-product',
-            oldProduct: prodData
-        });
-    }
-    console.log(prodData.imageurl);
-
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        console.log(errors);
-        return res.render('admin/add-product', {
-            pageTitle: 'Add product',
-            path: '/admin/add-product',
-            oldProduct: prodData
-        });
-    }
-
     try {
+        const prodData = {
+            title: req.body.title,
+            price: req.body.price,
+            desc: req.body.desc,
+            imageurl: image.path.substr(7),
+            userId: req.user
+        }
+
+        if (!image) {
+            return res.render('admin/add-product', {
+                pageTitle: 'Add product',
+                path: '/admin/add-product',
+                oldProduct: prodData
+            });
+        }
+        console.log(prodData.imageurl);
+
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            console.log(errors);
+            return res.render('admin/add-product', {
+                pageTitle: 'Add product',
+                path: '/admin/add-product',
+                oldProduct: prodData
+            });
+        }
+
         const product = new Product(prodData);
         await product.save();
         console.log(`[Prod created] > ${req.body.title}`);
         res.redirect('/admin/products');
-    } catch (err) { next(new Error(err).statusCode = 500) }
+    } catch (err) { 
+        console.log(err);
+        next(new Error(err).statusCode = 500) 
+    }
 }
 
 exports.getEditProd = async (req, res, next) => {
@@ -95,14 +98,17 @@ exports.postEditProd = async (req, res, next) => {
         prod.price = req.body.price;
         prod.desc = req.body.desc;
         if (image) {
-            file.deleteFile('public\\' + product.imageurl);
+            file.deleteFile('public\\' + prod.imageurl);
             prod.imageurl = image.path.substr(7);
         }
 
         await prod.save();
-    } catch (err) { next(new Error(err).statusCode = 500) }
+        res.redirect('/admin/products');
+    } catch (err) { 
+        console.log(err);
+        return next(new Error(err).statusCode = 500) 
+    }
 
-    res.redirect('/admin/products');
 };
 
 exports.deleteProduct = async (req, res, next) => {
@@ -112,8 +118,8 @@ exports.deleteProduct = async (req, res, next) => {
         const product = await Product.findById(id).exec();
         await file.deleteFile('public\\' + product.imageurl);
         await Product.deleteOne({ _id: id, userId: req.user._id }).exec();
-        await res.status(200).json({message: 'Product deleted'});
-    } catch (err) { res.status(500).json({message: 'Error: product not deleted'})}
+        await res.status(200).json({ message: 'Product deleted' });
+    } catch (err) { res.status(500).json({ message: 'Error: product not deleted' }) }
 };
 
 exports.getProducts = async (req, res, next) => {

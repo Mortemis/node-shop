@@ -71,7 +71,7 @@ exports.postLogin = async (req, res) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
             req.session.save(() => {
-                res.redirect('/shop/')
+                res.redirect('/shop/products/')
             });
         } else {
             res.redirect('/login?err=password');
@@ -131,6 +131,6 @@ exports.postSignUp = async (req, res, next) => {
 
 exports.postLogout = (req, res) => {
     req.session.destroy(() => {
-        res.redirect('/shop/');
+        res.redirect('/shop/products');
     });
 }

@@ -9,7 +9,7 @@
             <form action="/shop/cartremove" method="post">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" name="id" value="<%= product._id._id %>">
-                <button class="btn" type="submit">Remove <%= product._id._id %></button>
+                <button class="btn" type="submit">Remove</button>
             </form>
         </li>
         <% } %>

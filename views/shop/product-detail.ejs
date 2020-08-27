@@ -4,7 +4,9 @@
 <main class="centered">
     <h1><%= product.title %></h1>
     <hr>
-    <img src="/<%= product.imageurl %>" alt="">
+    <div class="card__image">
+        <img src="/<%= product.imageurl %>"  alt="">
+    </div>
     <h2>$<%= product.price %></h2>
     <p><%= product.desc %> </p>
 
