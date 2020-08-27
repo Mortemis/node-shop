@@ -106,15 +106,14 @@ exports.postEditProd = async (req, res, next) => {
 };
 
 exports.deleteProduct = async (req, res, next) => {
-    console.log('[Delete] > ' + req.body.id);
+    const id = req.params.id;
+    console.log('[Delete] > ' + id);
     try {
-
-        const product = await Product.findById(req.body.id).exec();
+        const product = await Product.findById(id).exec();
         await file.deleteFile('public\\' + product.imageurl);
-        await Product.deleteOne({ _id: req.body.id, userId: req.user._id }).exec();
-    } catch (err) { next(new Error(err).statusCode = 500) }
-
-    res.redirect('/admin/products');
+        await Product.deleteOne({ _id: id, userId: req.user._id }).exec();
+        await res.status(200).json({message: 'Product deleted'});
+    } catch (err) { res.status(500).json({message: 'Error: product not deleted'})}
 };
 
 exports.getProducts = async (req, res, next) => {

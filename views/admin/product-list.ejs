@@ -16,12 +16,17 @@
                 <p class="product__description"><%= product.desc %> </p>
             </div>
             <div class="card__actions">
-                <form action="/admin/delete-product" method="post">  
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <input type="hidden" name="id" value="<%= product._id %>">
-                    <button class="btn" type="submit">Delete</button>
-                </form>
-                <form action="/admin/edit-product/<%= product._id %>" method="get">  
+                <!--
+                    <form action="/admin/delete-product" method="post">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <input type="hidden" name="id" value="<%= product._id %>">
+                        <button class="btn" type="submit">Delete</button>
+                    </form>-->
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="id" value="<%= product._id %>">
+                <button class="btn" type="button" onclick="deleteProduct(this)">Delete</button>
+
+                <form action="/admin/edit-product/<%= product._id %>" method="get">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button class="btn" type="submit">Edit</button>
                 </form>
@@ -34,3 +39,5 @@
     <% } %>
 </main>
 <%- include('../partials/end') %>
+
+<script src="/js/admin.js"></script>
