@@ -1,0 +1,29 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main>
+    <% if (products.length > 0) { %>
+    <ul class="cart__list">
+        <% for (let product of products) {%>
+        <li class="cart__item"><%= product._id.title %> (<%= product.quantity %>)
+            <form action="/shop/cartremove" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="id" value="<%= product._id._id %>">
+                <button class="btn" type="submit">Remove <%= product._id._id %></button>
+            </form>
+        </li>
+        <% } %>
+        
+        <div class="cart__order">
+            <form action="/shop/create-order" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn" type="submit">Order</button>
+            </form>
+        </div>
+    </ul>
+    <% } else { %>
+    <h1>No products in Cart</h1>
+    <% } %>
+</main>
+
+<%- include('../partials/end') %>

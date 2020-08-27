@@ -1,0 +1,43 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main>
+    <form class="product-form" action="/signup" method="post">
+        <% if (error === 'email') { %>
+        <div class="err">
+            Email already in use.
+        </div>
+        <% } else if (error === 'password') { %>
+        <div class="err">
+            Passwords do not match.
+        </div>
+        <% } %>
+        <% if (errorMsg.length > 0) { %>
+        <div class="err">
+            <%= errorMsg %>
+        </div>
+        <% } %>
+
+
+        <div class="form-control">
+            <label for="email">E-Mail</label>
+            <input class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" type="email" name="email" id="email" value="<%= oldInput.email %>">
+        </div>
+        <div class="form-control">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="<%= oldInput.name %>">
+        </div>
+        <div class="form-control">
+            <label for="password">Password</label>
+            <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" type="password" name="password" id="password" value="<%= oldInput.password %>">
+        </div>
+        <div class="form-control">
+            <label for="confirm">Confirm password</label>
+            <input class="<%= validationErrors.find(e => e.param === 'confirm') ? 'invalid' : '' %>" type="password" name="confirm" id="confirm" value="<%= oldInput.confirm %>">
+        </div>
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button type="submit" class="btn">Sign Up</button>
+    </form>
+</main>
+
+<%- include('../partials/end') %>

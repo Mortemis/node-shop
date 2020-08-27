@@ -1,0 +1,9 @@
+<section class="pagination">
+    <% if (currentPage !== 1 && hasPreviousPage) { %> <a href="/shop/products/?page=<%= previousPage %>">&lt;</a> <% } %>
+    <% if (currentPage !== 1 && previousPage !== 1) { %> <a href="/shop/products/?page=1">1</a> <% } %>
+    <% if (hasPreviousPage) { %> <a href="/shop/products/?page=<%= previousPage %>"><%= previousPage %></a> <% } %> 
+    <a href="/shop/products/?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+    <% if (hasNextPage && nextPage !== lastPage) { %> <a href="/shop/products/?page=<%= nextPage %>"><%= nextPage %></a> <% } %> 
+    <% if (currentPage !== lastPage) { %> <a href="/shop/products/?page=<%= lastPage %>"><%= lastPage %></a> <% } %> 
+    <% if (currentPage !== lastPage && hasNextPage) { %> <a href="/shop/products/?page=<%= nextPage %>">&gt;</a> <% } %>
+</section>

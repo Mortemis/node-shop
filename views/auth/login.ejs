@@ -1,0 +1,44 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <form class="product-form" action="/login" method="POST">
+    <% if (error === 'email') { %>
+    <div class="err">
+      There is no account for this email. <br><a href="/signup">Sign up?</a>
+    </div>
+    <% } else if (error === 'password') {%>
+    <div class="err">
+      Invalid email or password.
+    </div>
+    <% } else if (error === 'other') {%>
+    <div class="err">
+      Internal server error.
+    </div>
+    <% } else if (error === 'auth') {%>
+    <div class="err">
+      You must be logged in to view this page.
+    </div>
+    <% } %>
+
+    <% if (errorMsg.length > 0) { %>
+    <div class="err">
+      <%= errorMsg %>
+    </div>
+    <% } %>
+
+    <div class="form-control">
+      <label for="email">E-Mail</label>
+      <input class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" type="email" name="email" id="email" value="<%= oldInput.email %>">
+    </div>
+    <div class="form-control">
+      <label for="password">Password</label>
+      <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" type="password" name="password" id="password" value="<%= oldInput.password %>">
+    </div>
+
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <button class="btn" type="submit">Log in</button>
+  </form>
+</main>
+
+<%- include('../partials/end') %>

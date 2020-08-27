@@ -1,0 +1,24 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main>
+    <% if (orders.length <= 0) { %>
+    <h1>No orders</h1>
+    <% } else { %>
+    <ul>
+        <% for (let order of orders) { %>
+        <li>
+            <h1>#<%= order._id %> </h1>
+            <ul>
+                <% for (let item of order.products) { %>
+                <li><%= item.product.title %> (<%= item.quantity %> )</li>
+                <% } %>
+            </ul>
+            <a href="/shop/orders/<%= order._id %>">Invoice</a>
+        </li>
+        <% } %>
+    </ul>
+    <% } %>
+</main>
+
+<%- include('../partials/end') %>
