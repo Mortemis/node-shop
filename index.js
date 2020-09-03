@@ -116,8 +116,9 @@ mongoose.set('useUnifiedTopology', true);
 
 mongoose.connect(MONGO_URI)
     .then(() => {
-        app.listen(3000, () => {
-            console.log(`[App started]`);
+        const port = process.env.PORT || 3000;
+        app.listen(port, () => {
+            console.log(`[App started] Port: ${port}`);
         });
     })
     .catch((err) => {
