@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const uuid = require('uuid');
 const csrf = require('csurf');
+const helmet = require('helmet');
 const MongoSessionStore = require('connect-mongodb-session')(session);
 
 // Routing/controller imports
@@ -20,6 +21,7 @@ const User = require('./models/user');
 const e = require('express');
 
 const config = require('./config.json');
+const { allowedNodeEnvironmentFlags } = require('process');
 
 // Const 
 const MONGO_URI = config.mongo_URI;
@@ -68,6 +70,7 @@ app.use(session({
 }));
 
 app.use(csrfProtection);
+app.use(helmet());
 
 // Setting user in req.user if auth
 app.use(async (req, res, next) => {
