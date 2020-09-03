@@ -5,9 +5,10 @@ const parser = require('body-parser');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const uuid = require('uuid');
 const csrf = require('csurf');
 const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 const MongoSessionStore = require('connect-mongodb-session')(session);
 
 // Routing/controller imports
@@ -15,13 +16,10 @@ const adminRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 const authRouter = require('./routes/auth');
 const errorController = require('./controllers/error');
-
-// Mongoose
+const logger = require('./middleware/logger');
 const User = require('./models/user');
-const e = require('express');
 
 const config = require('./config.json');
-const { allowedNodeEnvironmentFlags } = require('process');
 
 // Const 
 const MONGO_URI = config.mongo_URI;
@@ -45,6 +43,8 @@ const fileFilter = (req, file, cb) => {
         cb(null, false);
     }
 }
+
+
 
 // Express
 const app = express();
@@ -70,8 +70,9 @@ app.use(session({
 }));
 
 app.use(csrfProtection);
-app.use(helmet());
-
+//app.use(helmet());
+app.use(compression());
+app.use(logger);
 // Setting user in req.user if auth
 app.use(async (req, res, next) => {
     if (!req.session.user) {
